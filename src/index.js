@@ -2,10 +2,19 @@ const fs = require('fs')
 const express = require('express')
 const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
+const MongoClient = require('mongodb').MongoClient
+
+const MONGO_URL = 'mongodb://localhost:27017'
 
 // Schema
 const schemaFile = fs.readFileSync('src/schema.graphql', 'utf-8')
 const schema = buildSchema(schemaFile)
+
+// Database
+const client = MongoClient.connect(MONGO_URL, { useNewUrlParser: true })
+const db = client.db('memebot')
+const memes = db.collection('memes')
+app.locals.collections = { memes }
 
 // Resolvers
 const commandFiles = fs
@@ -31,3 +40,9 @@ app.use(
 )
 app.listen(4000)
 console.log('Running a GraphQL API server at localhost:4000/graphql')
+
+// Abort
+process.on('SIGINT', () => {
+  client.close()
+  process.exit()
+})
