@@ -1,0 +1,21 @@
+{
+  "name": "memebot-api",
+  "version": "1.0.0",
+  "description": "The API for memebot",
+  "main": "src/index.js",
+  "repository": "https://github.com/arjunchib/memebot-api.git",
+  "author": "Arjun Chib <arjunpatrickchib@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.8.0",
+    "graphql": "^14.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2"
+  }
+}
