@@ -2,6 +2,9 @@ const fs = require('fs')
 const express = require('express')
 const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
+const MongoClient = require('mongodb').MongoClient
+
+const MONGO_URL = 'mongodb://localhost:27017'
 
 // Schema
 const schemaFile = fs.readFileSync('src/schema.graphql', 'utf-8')
@@ -19,15 +22,21 @@ for (let file of commandFiles) {
   root[name] = require(`./resolvers/${file}`)
 }
 
-// App
-const app = express()
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true
+// Databse and app
+MongoClient.connect(MONGO_URL, { useNewUrlParser: true })
+  .then(client => {
+    const app = express()
+    const db = client.db('memebot')
+    app.use(
+      '/graphql',
+      graphqlHTTP({
+        schema: schema,
+        rootValue: root,
+        context: db,
+        graphiql: true
+      })
+    )
+    app.listen(4000)
+    console.log('Running a GraphQL API server at localhost:4000/graphql')
   })
-)
-app.listen(4000)
-console.log('Running a GraphQL API server at localhost:4000/graphql')
+  .catch(error => console.error(error))
