@@ -3,9 +3,6 @@ scalar DateTime
 type Query {
   info: String!
   memes: [Meme!]!
-  meme(command: String): Meme
-  commands: [String!]!
-  tags: [String!]!
 }
 
 type Mutation {
@@ -16,7 +13,7 @@ type Mutation {
   addTagtoMeme(name: String!, tag: String!): Meme
   removeTagFromMeme(name: String!, tag: String!): Meme
   renameMeme(oldName: String!, newName: String!): Meme
-  updateVolumeofMeme(name: String, volume: Float): Meme
+  updateVolumeOfMeme(name: String, volume: Float): Meme
 }
 
 type Meme {
