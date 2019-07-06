@@ -4,7 +4,11 @@ module.exports = async function({ name, author, url }, db) {
     .insertOne({
       name,
       author,
-      url
+      url,
+      aliases: [],
+      tags: [],
+      volume: 1.0,
+      createdAt: new Date()
     })
     .then(result => result.ops[0])
 }

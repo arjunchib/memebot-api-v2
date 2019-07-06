@@ -25,5 +25,4 @@ type Meme {
   volume: Float!
   url: String!
   createdAt: DateTime!
-  updatedAt: DateTime!
 }
