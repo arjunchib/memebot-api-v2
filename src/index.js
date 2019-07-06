@@ -10,12 +10,6 @@ const MONGO_URL = 'mongodb://localhost:27017'
 const schemaFile = fs.readFileSync('src/schema.graphql', 'utf-8')
 const schema = buildSchema(schemaFile)
 
-// Database
-const client = MongoClient.connect(MONGO_URL, { useNewUrlParser: true })
-const db = client.db('memebot')
-const memes = db.collection('memes')
-app.locals.collections = { memes }
-
 // Resolvers
 const commandFiles = fs
   .readdirSync('src/resolvers')
@@ -28,21 +22,21 @@ for (let file of commandFiles) {
   root[name] = require(`./resolvers/${file}`)
 }
 
-// App
-const app = express()
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true
+// Databse and app
+MongoClient.connect(MONGO_URL, { useNewUrlParser: true })
+  .then(client => {
+    const app = express()
+    const db = client.db('memebot')
+    app.use(
+      '/graphql',
+      graphqlHTTP({
+        schema: schema,
+        rootValue: root,
+        context: db,
+        graphiql: true
+      })
+    )
+    app.listen(4000)
+    console.log('Running a GraphQL API server at localhost:4000/graphql')
   })
-)
-app.listen(4000)
-console.log('Running a GraphQL API server at localhost:4000/graphql')
-
-// Abort
-process.on('SIGINT', () => {
-  client.close()
-  process.exit()
-})
+  .catch(error => console.error(error))

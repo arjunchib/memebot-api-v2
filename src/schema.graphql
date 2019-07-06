@@ -1,3 +1,13 @@
 type Query {
   info: String!
+  memes: [Meme]!
+}
+
+type Mutation {
+  createMeme(name: String!): Meme!
+}
+
+type Meme {
+  _id: ID!
+  name: String!
 }
