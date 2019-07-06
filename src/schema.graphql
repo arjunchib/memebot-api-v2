@@ -17,12 +17,18 @@ type Mutation {
 }
 
 type Meme {
-  _id: ID!
+  _id: ID
   name: String!
   author: User!
+  url: String!
   aliases: [String!]!
   tags: [String!]
   volume: Float!
-  url: String!
   createdAt: DateTime!
+}
+
+type User {
+  _id: ID
+  id: ID!
+  name: String!
 }
