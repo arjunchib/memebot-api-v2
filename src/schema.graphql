@@ -6,7 +6,7 @@ type Query {
 }
 
 type Mutation {
-  createMeme(name: String!, author: User!, url: String!): Meme!
+  createMeme(name: String!, author: String!, url: String!): Meme!
   deleteMeme(name: String!): Meme
   addAliasToMeme(name: String!, alias: String!): Meme
   removeAliasFromMeme(name: String!, alias: String!): Meme
@@ -17,18 +17,12 @@ type Mutation {
 }
 
 type Meme {
-  _id: ID
+  _id: ID!
   name: String!
-  author: User!
+  author: String!
   url: String!
   aliases: [String!]!
   tags: [String!]
   volume: Float!
   createdAt: DateTime!
-}
-
-type User {
-  _id: ID
-  id: ID!
-  name: String!
 }
