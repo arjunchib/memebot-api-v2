@@ -1,13 +1,32 @@
+scalar DateTime
+
 type Query {
   info: String!
-  memes: [Meme]!
+  memes: [Meme!]!
+  meme(command: String): Meme
+  commands: [String!]!
+  tags: [String!]!
 }
 
 type Mutation {
-  createMeme(name: String!): Meme!
+  createMeme(name: String!, author: User!, url: String!): Meme!
+  deleteMeme(name: String!): Meme
+  addAliasToMeme(name: String!, alias: String!): Meme
+  removeAliasFromMeme(name: String!, alias: String!): Meme
+  addTagtoMeme(name: String!, tag: String!): Meme
+  removeTagFromMeme(name: String!, tag: String!): Meme
+  renameMeme(oldName: String!, newName: String!): Meme
+  updateVolumeofMeme(name: String, volume: Float): Meme
 }
 
 type Meme {
   _id: ID!
   name: String!
+  author: User!
+  aliases: [String!]!
+  tags: [String!]
+  volume: Float!
+  url: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }

@@ -1,8 +1,10 @@
-module.exports = async function({ name }, db) {
+module.exports = async function({ name, author, url }, db) {
   const memes = db.collection('memes')
   return await memes
     .insertOne({
-      name
+      name,
+      author,
+      url
     })
     .then(result => result.ops[0])
 }
