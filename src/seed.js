@@ -9,6 +9,7 @@ MongoClient.connect(MONGO_URL, { useNewUrlParser: true })
     await memes.drop()
     await memes.createIndex({ name: 1 }, { unique: true })
     await memes.createIndex({ commands: 1 }, { unique: true })
+    await memes.createIndex({ tags: 1 })
     await memes.insertOne({
       name: 'Caveman',
       author: 'Arjun',
