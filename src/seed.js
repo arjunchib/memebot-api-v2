@@ -12,7 +12,10 @@ MongoClient.connect(MONGO_URL, { useNewUrlParser: true })
     await memes.createIndex({ tags: 1 })
     await memes.insertOne({
       name: 'Caveman',
-      author: 'Arjun',
+      author: {
+        id: '28937918273',
+        name: 'Arjun'
+      },
       url: 'https://memebot.solutions/memes/caveman.mp3',
       commands: ['Caveman'],
       tags: ['shaggy'],
