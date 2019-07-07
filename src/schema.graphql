@@ -3,6 +3,7 @@ scalar DateTime
 type Query {
   info: String!
   memes: [Meme!]!
+  meme(command: String!): Meme
 }
 
 type Mutation {
