@@ -5,7 +5,7 @@ module.exports = async function({ name, author, url }, db) {
       name,
       author,
       url,
-      aliases: [],
+      commands: [name],
       tags: [],
       volume: 1.0,
       createdAt: new Date()
