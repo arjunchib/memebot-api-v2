@@ -7,6 +7,10 @@
   "author": "Arjun Chib <arjunpatrickchib@gmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "develop": "nodemon src/index.js",
+    "seed": "node src/seed.js"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "express-graphql": "^0.8.0",
