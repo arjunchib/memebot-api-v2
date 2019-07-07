@@ -4,6 +4,8 @@ type Query {
   info: String!
   memes: [Meme!]!
   meme(command: String!): Meme
+  commands: [String!]!
+  tags: [String!]!
 }
 
 type Mutation {
