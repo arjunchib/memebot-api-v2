@@ -36,7 +36,7 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
           ip: req.ip,
           db
         },
-        graphiql: true
+        graphiql: process.env.NODE_ENV === 'development'
       }))
     )
     app.listen(4000)
