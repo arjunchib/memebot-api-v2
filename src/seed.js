@@ -1,8 +1,7 @@
 const MongoClient = require('mongodb').MongoClient
+require('dotenv').config()
 
-const MONGO_URL = 'mongodb://localhost:27017'
-
-MongoClient.connect(MONGO_URL, { useNewUrlParser: true })
+MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(async client => {
     const db = client.db('memebot')
     const memes = db.collection('memes')
