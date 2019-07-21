@@ -29,12 +29,15 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
     app.set('trust proxy', true)
     app.use(
       '/graphql',
-      graphqlHTTP({
+      graphqlHTTP(req => ({
         schema: schema,
         rootValue: root,
-        context: db,
+        context: {
+          ip: req.ip,
+          db
+        },
         graphiql: true
-      })
+      }))
     )
     app.listen(4000)
     console.log('Running a GraphQL API server at localhost:4000/graphql')

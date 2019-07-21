@@ -1,4 +1,4 @@
-module.exports = async function({ name, author, url }, db) {
+module.exports = async function({ name, author, url }, { db }) {
   const memes = db.collection('memes')
   return await memes
     .insertOne({

@@ -1,4 +1,4 @@
-module.exports = async function({ name, volume }, db) {
+module.exports = async function({ name, volume }, { db }) {
   const memes = db.collection('memes')
   return await memes
     .updateOne({ name }, { $set: { volume } })
