@@ -3,8 +3,7 @@ const express = require('express')
 const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
 const MongoClient = require('mongodb').MongoClient
-
-const MONGO_URL = 'mongodb://localhost:27017'
+require('dotenv').config()
 
 // Schema
 const schemaFile = fs.readFileSync('src/schema.graphql', 'utf-8')
@@ -23,7 +22,7 @@ for (let file of commandFiles) {
 }
 
 // Databse and app
-MongoClient.connect(MONGO_URL, { useNewUrlParser: true })
+MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(client => {
     const app = express()
     const db = client.db('memebot')
