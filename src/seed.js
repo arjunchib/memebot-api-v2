@@ -5,6 +5,7 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(async client => {
     const db = client.db('memebot')
     const memes = db.collection('memes')
+    await memes.insertOne({ x: 'test' }) //Ensure databse is created
     await memes.drop()
     await memes.createIndex({ name: 1 }, { unique: true })
     await memes.createIndex({ commands: 1 }, { unique: true })
