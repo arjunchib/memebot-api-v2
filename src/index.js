@@ -26,6 +26,7 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(client => {
     const app = express()
     const db = client.db('memebot')
+    app.set('trust proxy', true)
     app.use(
       '/graphql',
       graphqlHTTP({
