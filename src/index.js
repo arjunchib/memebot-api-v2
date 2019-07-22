@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const express = require('express')
 const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
@@ -6,12 +7,15 @@ const MongoClient = require('mongodb').MongoClient
 require('dotenv').config()
 
 // Schema
-const schemaFile = fs.readFileSync('src/schema.graphql', 'utf-8')
+const schemaFile = fs.readFileSync(
+  path.resolve(__dirname, 'schema.graphql'),
+  'utf-8'
+)
 const schema = buildSchema(schemaFile)
 
 // Resolvers
 const commandFiles = fs
-  .readdirSync('src/resolvers')
+  .readdirSync(path.resolve(__dirname, 'resolvers'))
   .filter(file => file.endsWith('.js'))
 
 const root = {}
