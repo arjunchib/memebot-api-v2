@@ -3,5 +3,5 @@ module.exports = async function({ name }, { ip, db }) {
     throw new Error('You are not authenticated to mutation data!')
   }
   const memes = db.collection('memes')
-  return await memes.deleteOne({ name }).then(result => result.ops[0])
+  return await memes.findOneAndDelete({ name }).then(result => result.value)
 }
