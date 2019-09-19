@@ -4,6 +4,6 @@ module.exports = async function({ name, tag }, { ip, db }) {
   }
   const memes = db.collection('memes')
   return await memes
-    .updateOne({ name }, { $addToSet: { tags: tag } })
-    .then(result => result.ops[0])
+    .findOneAndUpdate({ name }, { $addToSet: { tags: tag } })
+    .then(result => result.value)
 }
