@@ -30,7 +30,6 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(client => {
     const app = express()
     const db = client.db('memebot')
-    const port = process.env.NODE_ENV === 'development' ? 4000 : 80
     app.set('trust proxy', true)
     app.use(
       '/graphql',
@@ -44,7 +43,7 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
         graphiql: process.env.NODE_ENV === 'development'
       }))
     )
-    app.listen(port)
+    app.listen(4000)
     console.log('Running a GraphQL API server at localhost:4000/graphql')
   })
   .catch(error => console.error(error))
