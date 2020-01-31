@@ -25,12 +25,23 @@ for (let file of commandFiles) {
   root[name] = require(`./resolvers/${file}`)
 }
 
+// Set up / find existing local memes
+function initDir(dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir)
+  }
+}
+initDir(path.resolve(process.env.MEME_DIR))
+
 // Databse and app
 MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(client => {
     const app = express()
     const db = client.db('memebot')
     app.set('trust proxy', true)
+
+    // GraphQL server
+    console.log('Running a GraphQL API server at localhost:4000/graphql')
     app.use(
       '/graphql',
       graphqlHTTP(req => ({
@@ -43,7 +54,12 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
         graphiql: process.env.NODE_ENV === 'development'
       }))
     )
+
+    // Static meme file server
+    const memes_path = path.resolve(process.env.MEME_DIR)
+    console.log('Serving memes from ' + memes_path)
+    app.use('/memes', express.static(memes_path))
+
     app.listen(4000)
-    console.log('Running a GraphQL API server at localhost:4000/graphql')
   })
   .catch(error => console.error(error))
