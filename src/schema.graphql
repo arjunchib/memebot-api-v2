@@ -9,7 +9,13 @@ type Query {
 }
 
 type Mutation {
-  createMeme(name: String!, author: UserInput!, url: String!): Meme!
+  createMeme(
+    name: String!
+    author: UserInput!
+    url: String!
+    start: String!
+    end: String!
+  ): Meme!
   deleteMeme(name: String!): Meme
   addAliasToMeme(name: String!, alias: String!): Meme
   removeAliasFromMeme(name: String!, alias: String!): Meme
