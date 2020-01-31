@@ -13,6 +13,8 @@ The API for interacting with the MemeBot Database
 
 5. Run `mongod` via the instructions from the previous step's install page
 
+5. Set the environment file up according to the example
+
 6. Seed the database by running `yarn seed`
 
 7. Start the graphql server by running `yarn develop`
