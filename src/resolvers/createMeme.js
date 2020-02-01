@@ -1,5 +1,5 @@
 const yt_download = require('../meme-download/youtube')
-const local_upload = require('../meme-upload/local-upload')
+const local_upload = require('../meme-upload/local-upload').add
 
 module.exports = async function({ name, author, url, start, end }, { ip, db }) {
   if (ip !== process.env.MEMEBOT_IP && process.env.NODE_ENV !== 'development') {

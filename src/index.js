@@ -51,7 +51,16 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
           ip: req.ip,
           db
         },
-        graphiql: process.env.NODE_ENV === 'development'
+        graphiql: process.env.NODE_ENV === 'development',
+        customFormatErrorFn: err => {
+          console.log(err)
+          return {
+            message: err.message,
+            code: err.originalError && err.originalError.code,
+            locations: err.locations,
+            path: err.path
+          }
+        }
       }))
     )
 

@@ -3,7 +3,7 @@ scalar DateTime
 type Query {
   info: String!
   memes: [Meme!]!
-  meme(command: String!): Meme!
+  meme(command: String!): Meme
   commands: [String!]!
   tags: [String!]!
 }

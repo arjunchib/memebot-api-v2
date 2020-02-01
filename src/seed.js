@@ -4,24 +4,7 @@ require('dotenv').config()
 MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(async client => {
     const db = client.db('memebot')
-    const memes = db.collection('memes')
-    await memes.insertOne({ x: 'test' }) //Ensure databse is created
-    await memes.drop()
-    await memes.createIndex({ name: 1 }, { unique: true })
-    await memes.createIndex({ commands: 1 }, { unique: true })
-    await memes.createIndex({ tags: 1 })
-    await memes.insertOne({
-      name: 'Caveman',
-      author: {
-        id: '28937918273',
-        name: 'Arjun'
-      },
-      url: 'https://memebot.solutions/memes/caveman.mp3',
-      commands: ['Caveman'],
-      tags: ['shaggy'],
-      volume: 1.0,
-      createdAt: new Date()
-    })
+    db.collection('memes')
     client.close()
   })
   .catch(error => console.error(error))
