@@ -6,10 +6,6 @@ module.exports = async function({ name, author, url, start, end }, { ip, db }) {
     throw new Error('You are not authenticated to mutation data!')
   }
 
-  if (start >= end) {
-    throw new Error('Meme starts before it ends')
-  }
-
   const memes = db.collection('memes')
   if (await memes.findOne({ commands: name })) {
     throw new Error('Duplicate Meme')
