@@ -7,7 +7,18 @@ require('dotenv').config()
 MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(async client => {
     const db = client.db('memebot')
-    const memes = db.collection('memes')
+    await db.dropCollection('memes')
+    const memes = await db.createCollection('memes', {
+      collation: { locale: 'en_US', strength: 2 }
+    })
+    memes.createIndex(
+      { name: 1 },
+      { collation: { locale: 'en_US', strength: 2 } }
+    )
+    memes.createIndex(
+      { commands: 1 },
+      { collation: { locale: 'en_US', strength: 2 } }
+    )
 
     if (process.argv[2] === 'og' && process.argv.length === 5) {
       const meme_dir = process.argv[3]
@@ -16,8 +27,6 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
       const meme_files = fs
         .readdirSync(meme_dir)
         .filter(file => file.endsWith('.json'))
-
-      console.log(meme_files)
 
       for (const meme_file of meme_files) {
         const old_meme = JSON.parse(
