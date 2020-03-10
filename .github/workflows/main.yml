@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@master
@@ -17,23 +17,24 @@ jobs:
       env:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.KEY }}
-        passphrase: ${{ secrets.PASSPHRASE }}
       with:
         source: "."
         target: "/home/memebot"
     - name: Build and deploy server
       uses: appleboy/ssh-action@master
+      env:
+        MONGO_URL: ${{ secrets.MONGO_URL }}
+        NODE_ENV: production
+        MEME_DIR: ./.memes
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        passphrase: ${{ secrets.PASSPHRASE }}
-        env: ${{ secrects.ENV }}
+        env: MONGO_URL, NODE_ENV, MEME_DIR
         script_stop: true
         script: |
           cd /home/memebot/
+          nvm install
           yarn
           yarn serve
