@@ -28,7 +28,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          env: MONGO_URL, MEMEBOT_IP
+          envs: MONGO_URL,MEMEBOT_IP
           script_stop: true
           script: |
             cd /home/memebot/
