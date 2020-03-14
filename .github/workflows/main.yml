@@ -1,0 +1,38 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Upload files to memecentral
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: '.'
+          target: '/home/memebot'
+      - name: Reload PM2 server
+        uses: appleboy/ssh-action@master
+        env:
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          MEMEBOT_IP: ${{ secrets.MEMEBOT_IP }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          envs: MONGO_URL,MEMEBOT_IP
+          script_stop: true
+          script: |
+            cd /home/memebot-api/
+            nvm install
+            yarn
+            pm2 startOrReload ecosystem.config.yml
+            pm2 save
