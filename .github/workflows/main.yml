@@ -16,7 +16,7 @@ jobs:
         env:
           KEY: ${{ secrets.KEY }}
         run: |
-          echo $KEY > ${HOME}/memebot_api_rsa
+          printf "%s" "$KEY" > "${HOME}/memebot_api_rsa"
           chmod 600 ${HOME}/memebot_api_rsa
       - name: Upload files to memecentral
         env:
