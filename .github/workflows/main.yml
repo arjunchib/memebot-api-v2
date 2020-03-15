@@ -22,7 +22,7 @@ jobs:
         env:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
-        run: rsync -a --delete --exclude ".git" -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${HOME}/memebot_api_rsa" ${GITHUB_WORKSPACE}/ ${USERNAME}@${HOST}:/home/memebot-api/
+        run: rsync -a --delete --exclude ".git" -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${HOME}/memebot_api_rsa" ${GITHUB_WORKSPACE}/ ${USERNAME}@${HOST}:~/memebot-api/
       - name: Reload PM2 server
         uses: appleboy/ssh-action@master
         env:
