@@ -35,7 +35,7 @@ jobs:
           envs: MONGO_URL,MEMEBOT_IP
           script_stop: true
           script: |
-            cd /home/memebot-api/
+            cd ~/memebot-api/
             nvm install
             yarn
             pm2 startOrReload ecosystem.config.yml
