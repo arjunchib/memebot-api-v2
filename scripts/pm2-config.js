@@ -7,4 +7,4 @@ const pm2Config = JSON.parse(fs.readFileSync(pm2ConfigPath))
 
 envVariables.forEach(x => (pm2Config.apps[0].env[x] = process.env[x]))
 
-fs.writeFileSync(pm2ConfigPath, JSON.stingify(pm2Config))
+fs.writeFileSync(pm2ConfigPath, JSON.stringify(pm2Config))
