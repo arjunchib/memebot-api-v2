@@ -23,7 +23,7 @@ jobs:
         env:
           MONGO_URL: ${{ secrets.MONGO_URL }}
           MEMEBOT_IP: ${{ secrets.MEMEBOT_IP }}
-        run: node pm2-config.js MONGO_URL MEMEBOT_IP
+        run: node ${GITHUB_WORKSPACE}/scripts/pm2-config.js MONGO_URL MEMEBOT_IP
       - name: Upload files to memecentral
         run: rsync -a --delete --exclude ".git" -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${HOME}/memebot_api_rsa" ${GITHUB_WORKSPACE}/ ${USERNAME}@${HOST}:~/memebot-api/
       - name: Reload PM2 server
