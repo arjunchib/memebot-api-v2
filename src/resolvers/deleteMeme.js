@@ -1,4 +1,5 @@
-const local_delete = require('../meme-upload/local-upload').delete
+const { remove: localRemove } = require('../meme-upload/local')
+const { remove: spacesRemove } = require('../meme-upload/spaces')
 
 module.exports = async function({ name }, { ip, db }) {
   if (ip !== process.env.MEMEBOT_IP && process.env.NODE_ENV !== 'development') {
@@ -6,6 +7,8 @@ module.exports = async function({ name }, { ip, db }) {
   }
   const memes = db.collection('memes')
   const meme = (await memes.findOneAndDelete({ name })).value
-  await local_delete(meme.url.replace(/^\/memes.*\//, ''))
+  const remove =
+    process.env.NODE_ENV === 'production' ? spacesRemove : localRemove
+  await remove(meme.url)
   return meme
 }

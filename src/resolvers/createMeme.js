@@ -1,5 +1,6 @@
-const yt_download = require('../meme-download/youtube')
-const local_upload = require('../meme-upload/local-upload').add
+const download = require('../meme-download/youtube')
+const { add: localUpload } = require('../meme-upload/local')
+const { add: spacesUpload } = require('../meme-upload/spaces')
 
 module.exports = async function({ name, author, url, start, end }, { ip, db }) {
   if (ip !== process.env.MEMEBOT_IP && process.env.NODE_ENV !== 'development') {
@@ -8,22 +9,24 @@ module.exports = async function({ name, author, url, start, end }, { ip, db }) {
 
   const memes = db.collection('memes')
   if (await memes.findOne({ commands: name })) {
-    throw new Error('Duplicate Meme')
+    throw new Error('This meme already exists!')
   }
 
   const meme = {
-    url: url,
-    start: start ? start : 0,
-    end: end ? end : 0
+    url,
+    start,
+    end
   }
 
-  return local_upload(yt_download(meme))
-    .then(function(file_name) {
-      const new_url = '/memes/' + file_name
+  const upload =
+    process.env.NODE_ENV === 'production' ? spacesUpload : localUpload
+
+  return upload(download(meme))
+    .then(url => {
       return memes.insertOne({
         name,
         author,
-        url: new_url,
+        url,
         commands: [name],
         tags: [],
         volume: 1.0,
