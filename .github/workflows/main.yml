@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - fix-workflow-scp
 
 env:
   HOST: ${{ secrets.HOST }}
@@ -20,20 +21,25 @@ jobs:
         env:
           KEY: ${{ secrets.KEY }}
         run: |
-          printf "%s" "$KEY" > "${HOME}/memebot_api_rsa"
-          chmod 600 ${HOME}/memebot_api_rsa
+          mkdir ${HOME}/.ssh
+          printf "%s" "$KEY" > "${HOME}/.ssh/id_rsa"
+          chmod 600 ${HOME}/.ssh/id_rsa
+      - name: Add server to known hosts
+        env:
+          SERVER_PUBLIC_KEY: ${{ secrets.SERVER_PUBLIC_KEY }}
+        run: |
+          printf "%s" "$SERVER_PUBLIC_KEY" > "${HOME}/.ssh/known_hosts"
+          chmod 600 ${HOME}/.ssh/known_hosts
       - name: Add secrets to PM2 Config
         env:
           MONGO_URL: ${{ secrets.MONGO_URL }}
           MEMEBOT_IP: ${{ secrets.MEMEBOT_IP }}
         run: node ${GITHUB_WORKSPACE}/scripts/pm2-config.js MONGO_URL MEMEBOT_IP
       - name: Upload files to memecentral
-        run: rsync -a --delete --exclude ".git" -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${HOME}/memebot_api_rsa" ${GITHUB_WORKSPACE}/ ${USERNAME}@${HOST}:~/memebot-api/
+        run: rsync -azh --delete --exclude ".git" --exclude-from ".gitignore" ${GITHUB_WORKSPACE}/ ${USERNAME}@${HOST}:~/memebot-api/
       - name: Reload PM2 server
         run: |
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${HOME}/memebot_api_rsa ${USERNAME}@${HOST} -T << EOF
-            MONGO_URL="${MONGO_URL}"
-            MEMEBOT_IP="${MEMEBOT_IP}"
+          ssh ${USERNAME}@${HOST} -T << EOF
             cd ~/memebot-api/
             nvm install
             yarn
