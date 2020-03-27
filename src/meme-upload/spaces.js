@@ -11,6 +11,7 @@ function add(stream) {
   const key = `${prefix}/${fileName}`
   return s3
     .upload({
+      ACL: 'public-read',
       Body: stream,
       Bucket: process.env.SPACE,
       Key: key
