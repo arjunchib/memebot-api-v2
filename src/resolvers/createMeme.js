@@ -1,6 +1,5 @@
 const download = require('../meme-download/youtube')
-const { add: localUpload } = require('../meme-upload/local')
-const { add: spacesUpload } = require('../meme-upload/spaces')
+const { add: upload } = require(`../meme-upload/${process.env.UPLOAD}`)
 
 module.exports = async function({ name, author, url, start, end }, { ip, db }) {
   if (ip !== process.env.MEMEBOT_IP && process.env.NODE_ENV !== 'development') {
@@ -17,9 +16,6 @@ module.exports = async function({ name, author, url, start, end }, { ip, db }) {
     start,
     end
   }
-
-  const upload =
-    process.env.NODE_ENV === 'production' ? spacesUpload : localUpload
 
   return upload(download(meme))
     .then(url => {

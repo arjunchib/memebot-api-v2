@@ -1,8 +1,8 @@
+require('dotenv').config()
 const fs = require('fs')
 const path = require('path')
-const local_upload = require('./meme-upload/local-upload').add
 const MongoClient = require('mongodb').MongoClient
-require('dotenv').config()
+const { add: upload } = require(`./meme-upload/${process.env.UPLOAD}`)
 
 MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(async client => {
@@ -34,7 +34,7 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
         )
         const old_audio = path.join(audio_dir, old_meme.file)
 
-        const file_name = await local_upload(fs.createReadStream(old_audio))
+        const file_name = await upload(fs.createReadStream(old_audio))
 
         memes.insertOne({
           name: old_meme.name,

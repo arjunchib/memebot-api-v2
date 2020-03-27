@@ -7,7 +7,8 @@ const s3 = new S3({
 
 function add(stream) {
   const fileName = shortid.generate() + '.mp3'
-  const key = `memes/${fileName}`
+  const prefix = process.env.NODE_ENV === 'development' ? 'memes-dev' : 'memes'
+  const key = `${prefix}/${fileName}`
   return s3
     .upload({
       Body: stream,
