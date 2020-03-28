@@ -1,7 +1,0 @@
-apps:
-  - script: ./src/index.js
-    name: 'memebot-api'
-    env:
-      NODE_ENV: production
-      UPLOAD: spaces
-    max_memory_restart: '900M'
