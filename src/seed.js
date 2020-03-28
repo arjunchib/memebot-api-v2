@@ -34,7 +34,7 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
         )
         const old_audio = path.join(audio_dir, old_meme.file)
 
-        const file_name = await upload(fs.createReadStream(old_audio))
+        const url = await upload(fs.createReadStream(old_audio))
 
         memes.insertOne({
           name: old_meme.name,
@@ -42,7 +42,7 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
             id: old_meme.authorID,
             name: old_meme.author
           },
-          url: '/memes/' + file_name,
+          url,
           commands: old_meme.commands,
           tags: old_meme.tags,
           volume: old_meme.volume != null ? old_meme.volume : 1,
