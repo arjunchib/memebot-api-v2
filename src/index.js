@@ -31,7 +31,9 @@ function initDir(dir) {
     fs.mkdirSync(dir)
   }
 }
-initDir(path.resolve(process.env.MEME_DIR))
+if (process.env.UPLOAD === 'local') {
+  initDir(path.resolve(process.env.MEME_DIR))
+}
 
 // Databse and app
 MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
@@ -65,9 +67,11 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
     )
 
     // Static meme file server
-    const memes_path = path.resolve(process.env.MEME_DIR)
-    console.log('Serving memes from ' + memes_path)
-    app.use('/memes', express.static(memes_path))
+    if (process.env.UPLOAD === 'local') {
+      const memes_path = path.resolve(process.env.MEME_DIR)
+      console.log('Serving memes from ' + memes_path)
+      app.use('/memes', express.static(memes_path))
+    }
 
     app.listen(4000)
   })
