@@ -33,9 +33,17 @@ jobs:
         env:
           MONGO_URL: ${{ secrets.MONGO_URL }}
           MEMEBOT_IP: ${{ secrets.MEMEBOT_IP }}
-        run: node ${GITHUB_WORKSPACE}/scripts/pm2-config.js MONGO_URL MEMEBOT_IP
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SPACE: ${{ secrets.SPACE }}
+          SPACES_ENDPOINT: ${{ secrets.SPACES_ENDPOINT }}
+        run:
+          node ${GITHUB_WORKSPACE}/scripts/pm2-config.js MONGO_URL MEMEBOT_IP
+          AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY SPACE SPACES_ENDPOINT
       - name: Upload files to memecentral
-        run: rsync -azh --delete --exclude ".git" --exclude-from ".gitignore" ${GITHUB_WORKSPACE}/ ${USERNAME}@${HOST}:~/memebot-api/
+        run:
+          rsync -azh --delete --exclude ".git" --exclude-from ".gitignore"
+          ${GITHUB_WORKSPACE}/ ${USERNAME}@${HOST}:~/memebot-api/
       - name: Reload PM2 server
         run: |
           ssh ${USERNAME}@${HOST} -T << EOF
