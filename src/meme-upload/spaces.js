@@ -4,6 +4,7 @@ const s3 = new S3({
   apiVersion: '2006-03-01',
   endpoint: 'https://nyc3.digitaloceanspaces.com'
 })
+const { URL } = require('url')
 
 function add(stream) {
   const fileName = shortid.generate() + '.mp3'
@@ -21,7 +22,7 @@ function add(stream) {
 }
 
 function remove(url) {
-  const key = url.replace(`${process.env.SPACES_ENDPOINT}/`, '')
+  const key = new URL(url).pathname.slice(1)
   return s3
     .deleteObject({
       Bucket: process.env.SPACE,
