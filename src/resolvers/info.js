@@ -1,3 +1,3 @@
 module.exports = function() {
-  return 'This is the API for memebot.'
-}
+  return "This is the API for memebot.";
+};

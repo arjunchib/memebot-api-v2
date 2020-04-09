@@ -1,9 +1,9 @@
 module.exports = async function({ name, alias }, { ip, db }) {
-  if (ip !== process.env.MEMEBOT_IP && process.env.NODE_ENV !== 'development') {
-    throw new Error('You are not authenticated to mutation data!')
+  if (ip !== process.env.MEMEBOT_IP && process.env.NODE_ENV !== "development") {
+    throw new Error("You are not authenticated to mutation data!");
   }
-  const memes = db.collection('memes')
+  const memes = db.collection("memes");
   return await memes
     .findOneAndUpdate({ name }, { $addToSet: { commands: alias } })
-    .then(result => result.value)
-}
+    .then(result => result.value);
+};

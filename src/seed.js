@@ -1,40 +1,40 @@
-require('dotenv').config()
-const fs = require('fs')
-const path = require('path')
-const MongoClient = require('mongodb').MongoClient
-const { add: upload } = require(`./meme-upload/${process.env.UPLOAD}`)
+require("dotenv").config();
+const fs = require("fs");
+const path = require("path");
+const MongoClient = require("mongodb").MongoClient;
+const { add: upload } = require(`./meme-upload/${process.env.UPLOAD}`);
 
 MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
   .then(async client => {
-    const db = client.db('memebot')
-    await db.dropCollection('memes')
-    const memes = await db.createCollection('memes', {
-      collation: { locale: 'en_US', strength: 2 }
-    })
+    const db = client.db("memebot");
+    await db.dropCollection("memes");
+    const memes = await db.createCollection("memes", {
+      collation: { locale: "en_US", strength: 2 }
+    });
     memes.createIndex(
       { name: 1 },
-      { collation: { locale: 'en_US', strength: 2 } }
-    )
+      { collation: { locale: "en_US", strength: 2 } }
+    );
     memes.createIndex(
       { commands: 1 },
-      { collation: { locale: 'en_US', strength: 2 } }
-    )
+      { collation: { locale: "en_US", strength: 2 } }
+    );
 
-    if (process.argv[2] === 'og' && process.argv.length === 5) {
-      const meme_dir = process.argv[3]
-      const audio_dir = process.argv[4]
+    if (process.argv[2] === "og" && process.argv.length === 5) {
+      const meme_dir = process.argv[3];
+      const audio_dir = process.argv[4];
 
       const meme_files = fs
         .readdirSync(meme_dir)
-        .filter(file => file.endsWith('.json'))
+        .filter(file => file.endsWith(".json"));
 
       for (const meme_file of meme_files) {
         const old_meme = JSON.parse(
           fs.readFileSync(path.join(meme_dir, meme_file))
-        )
-        const old_audio = path.join(audio_dir, old_meme.file)
+        );
+        const old_audio = path.join(audio_dir, old_meme.file);
 
-        const url = await upload(fs.createReadStream(old_audio))
+        const url = await upload(fs.createReadStream(old_audio));
 
         memes.insertOne({
           name: old_meme.name,
@@ -47,9 +47,9 @@ MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
           tags: old_meme.tags,
           volume: old_meme.volume != null ? old_meme.volume : 1,
           createdAt: old_meme.dateAdded
-        })
+        });
       }
     }
-    client.close()
+    client.close();
   })
-  .catch(error => console.error(error))
+  .catch(error => console.error(error));
