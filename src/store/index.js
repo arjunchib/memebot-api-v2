@@ -1,27 +1,56 @@
-const local = require("./local");
-const spaces = require("./spaces");
+const shortid = require("shortid");
+const S3 = require("aws-sdk/clients/s3");
 
-const getStore = (store = "local") => {
-  if (store === "local") {
-    return local;
-  } else if (store === "spaces") {
-    return spaces;
-  }
+const s3 = new S3({
+  apiVersion: "2006-03-01",
+  endpoint: process.env.SPACE_ENDPOINT,
+});
+
+const add = (stream, id = shortid.generate()) => {
+  const prefix = process.env.SPACE_PREFIX;
+  const key = `${prefix}/${id}.mp3`;
+  return s3
+    .upload({
+      ACL: "public-read",
+      Body: stream,
+      Bucket: process.env.SPACE,
+      Key: key,
+    })
+    .promise()
+    .then(() => {
+      return { url: `${process.env.SPACES_CDN}/${key}`, id };
+    });
 };
 
-const add = (stream, store) => {
-  const module = getStore(store);
-  return module.add(stream);
+const remove = (id) => {
+  const prefix = process.env.SPACE_PREFIX;
+  const key = `${prefix}/${id}.mp3`;
+  return s3
+    .deleteObject({
+      Bucket: process.env.SPACE,
+      Key: key,
+    })
+    .promise();
 };
 
-const remove = (id, store) => {
-  const module = getStore(store);
-  return module.remove(id);
-};
-
-const list = (store) => {
-  const module = getStore(store);
-  return module.list();
+const list = () => {
+  return new Promise((resolve, reject) => {
+    const contents = [];
+    s3.listObjects({
+      Bucket: process.env.SPACE,
+      Prefix: process.env.SPACE_PREFIX,
+    }).eachPage((err, data) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      if (data != null) {
+        contents.push(...data.Contents);
+      } else {
+        resolve(contents);
+      }
+    });
+  });
 };
 
 module.exports = {
