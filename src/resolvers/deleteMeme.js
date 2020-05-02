@@ -1,12 +1,9 @@
-const { remove } = require(`../meme-upload/${process.env.UPLOAD}`);
+const store = require(`../store`);
 
-module.exports = async function({ name }, { ip, db }) {
-  if (ip !== process.env.MEMEBOT_IP && process.env.NODE_ENV !== "development") {
-    throw new Error("You are not authenticated to mutation data!");
-  }
+module.exports = async function ({ name }, { db }) {
   const memes = db.collection("memes");
   const meme = await memes.findOne({ name });
-  await remove(meme.url);
+  await store.remove(meme.id, process.env.STORE);
   await memes.deleteOne({ name });
   return meme;
 };

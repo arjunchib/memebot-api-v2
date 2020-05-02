@@ -1,9 +1,6 @@
-module.exports = async function({ name, tag }, { ip, db }) {
-  if (ip !== process.env.MEMEBOT_IP && process.env.NODE_ENV !== "development") {
-    throw new Error("You are not authenticated to mutation data!");
-  }
+module.exports = async function ({ name, tag }, { db }) {
   const memes = db.collection("memes");
-  return await memes
+  return memes
     .findOneAndUpdate({ name }, { $pull: { tags: tag } })
-    .then(result => result.value);
+    .then((result) => result.value);
 };
