@@ -11,11 +11,12 @@ module.exports = async function ({ oldName, newName }, { db }) {
     $pull: { commands: oldName },
   });
 
-  const result = await bulk.execute();
+  const bulkResult = await bulk.execute();
 
-  if (result.writeErrors) {
-    throw result.writeErrors;
+  if (bulkResult.writeErrors) {
+    throw bulkResult.writeErrors;
   }
 
-  return memes.findOne({ name: newName }).then((result) => result.value);
+  const result = await memes.findOne({ name: newName });
+  return result.value;
 };

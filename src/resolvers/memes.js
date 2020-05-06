@@ -1,4 +1,5 @@
 module.exports = async function (_, { db }) {
   const memes = db.collection("memes");
-  return memes.find({}).then((result) => result.toArray());
+  const result = await memes.find({});
+  return result.toArray();
 };

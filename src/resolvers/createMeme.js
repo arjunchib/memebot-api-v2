@@ -1,35 +1,29 @@
 const source = require("../source");
 const store = require(`../store`);
 
-module.exports = async ({ name, author, url, start, end }, { db, client }) => {
-  const session = client.startSession();
-  const transactionOptions = {};
+module.exports = async ({ name, author, url, start, end }, { db }) => {
+  const memes = db.collection("memes");
 
-  let meme;
+  const audioStream = source.download(url, start, end);
 
-  try {
-    await session.withTransaction(async () => {
-      const audioStream = source.download(url, start, end);
-      const uploadPromise = store.add(audioStream);
+  const key = `${process.env.SPACE_PREFIX}/${name}.mp3`;
+  const originUrl = `https://${process.env.SPACE}.${process.env.SPACE_ENDPOINT}/${key}`;
+  const edgeUrl = `https://${process.env.SPACE_EDGE}/${key}`;
 
-      const memes = db.collection("memes");
-      const result = await memes.insertOne({
-        name,
-        author,
-        url: "storeUrl",
-        sourceUrl: url,
-        commands: [name],
-        tags: [],
-        volume: 1.0,
-        createdAt: new Date(),
-      });
+  const result = await memes.insertOne({
+    name,
+    author,
+    originUrl,
+    edgeUrl,
+    key,
+    sourceUrl: url,
+    commands: [name],
+    tags: [],
+    volume: 1.0,
+    createdAt: new Date(),
+  });
 
-      await uploadPromise;
+  await store.add(audioStream, process.env.SPACE, key);
 
-      meme = result.ops[0];
-    }, transactionOptions);
-    return meme;
-  } finally {
-    await session.endSession();
-  }
+  return result.ops[0];
 };
