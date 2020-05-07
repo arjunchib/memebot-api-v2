@@ -15,6 +15,7 @@ module.exports = async ({ name, author, url, start, end }, { db }) => {
     author,
     originUrl,
     edgeUrl,
+    space: process.env.SPACE,
     key,
     sourceUrl: url,
     commands: [name],

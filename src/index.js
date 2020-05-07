@@ -3,7 +3,7 @@ const path = require("path");
 const express = require("express");
 const graphqlHTTP = require("express-graphql");
 const MongoClient = require("mongodb").MongoClient;
-const resolvers = require("./resolvers.js");
+const resolvers = require("./resolvers");
 
 require("dotenv").config();
 

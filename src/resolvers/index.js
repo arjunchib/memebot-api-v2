@@ -6,5 +6,6 @@ module.export = fs
   .filter((file) => file.endsWith(".js") && file !== "index.js")
   .reduce((result, file) => {
     const name = path.basename(file, ".js");
-    result[name] = require(`./resolvers/${file}`);
+    result[name] = require(`./${file}`);
+    return result;
   }, {});
