@@ -1,5 +1,3 @@
-scalar DateTime
-
 type Query {
   info: String!
   memes: [Meme!]!
@@ -29,11 +27,15 @@ type Meme {
   _id: ID!
   name: String!
   author: User!
-  url: String!
+  originUrl: String!
+  edgeUrl: String!
+  space: String!
+  key: String!
+  sourceUrl: String
   commands: [String!]!
   tags: [String!]
   volume: Float!
-  createdAt: DateTime!
+  createdAt: String!
 }
 
 type User {

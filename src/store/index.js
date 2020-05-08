@@ -2,7 +2,7 @@ const S3 = require("aws-sdk/clients/s3");
 
 const s3 = new S3({
   apiVersion: "2006-03-01",
-  endpoint: `https://${process.env.SPACE_ENDPOINT}`,
+  endpoint: `${process.env.SPACE_ENDPOINT}`,
 });
 
 const add = (stream, space, key) => {
@@ -25,12 +25,12 @@ const remove = (space, key) => {
     .promise();
 };
 
-const list = () => {
+const list = (space, prefix) => {
   return new Promise((resolve, reject) => {
     const contents = [];
     s3.listObjects({
-      Bucket: process.env.SPACE,
-      Prefix: process.env.SPACE_PREFIX,
+      Bucket: space,
+      Prefix: prefix,
     }).eachPage((err, data) => {
       if (err) {
         reject(err);

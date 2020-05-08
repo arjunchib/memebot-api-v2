@@ -1,16 +1,18 @@
+require("dotenv").config();
+
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const graphqlHTTP = require("express-graphql");
 const MongoClient = require("mongodb").MongoClient;
 const resolvers = require("./resolvers");
-
-require("dotenv").config();
+const { buildSchema } = require("graphql");
 
 async function main() {
   // Create mongo client
   const client = await MongoClient.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
 
   // Connect to memebot database
@@ -23,9 +25,8 @@ async function main() {
   app.set("trust proxy", true);
 
   // Load schema
-  const schema = fs.readFileSync(
-    path.resolve(__dirname, "schema.graphql"),
-    "utf-8"
+  const schema = buildSchema(
+    fs.readFileSync(path.resolve(__dirname, "schema.graphql"), "utf-8")
   );
 
   // Set graphql options

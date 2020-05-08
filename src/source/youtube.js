@@ -4,10 +4,10 @@ const ffmpeg = require("fluent-ffmpeg");
 
 const validateUrl = (url) => {
   const hostWhitelist = ["www.youtube.com", "youtube.com", "youtu.be"];
-  const isCorrectDomain = !validator.isURL(url, {
+  const isCorrectDomain = validator.isURL(url, {
     host_whitelist: hostWhitelist,
   });
-  const hasValidId = !ytdl.validateURL(url);
+  const hasValidId = ytdl.validateURL(url);
   return isCorrectDomain && hasValidId;
 };
 
