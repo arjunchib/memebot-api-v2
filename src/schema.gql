@@ -4,6 +4,7 @@ type Query {
   meme(command: String!): Meme
   commands: [String!]!
   tags: [String!]!
+  play(id: ID!): Play
 }
 
 type Mutation {
@@ -20,7 +21,13 @@ type Mutation {
   addTagToMeme(name: String!, tag: String!): Meme
   removeTagFromMeme(name: String!, tag: String!): Meme
   renameMeme(oldName: String!, newName: String!): Meme
-  updateVolumeOfMeme(name: String, volume: Float): Meme
+  updateVolumeOfMeme(name: String!, volume: Float!): Meme
+  logPlay(
+    command: String!
+    author: UserInput!
+    time: String!
+    guild: GuildInput!
+  ): Play
 }
 
 type Meme {
@@ -38,12 +45,33 @@ type Meme {
   createdAt: String!
 }
 
+type Play {
+  _id: ID!
+  command: String!
+  meme: Meme!
+  author: User!
+  time: String!
+  guild: Guild!
+}
+
 type User {
   id: ID!
   name: String!
 }
 
+type Guild {
+  id: ID!
+  region: String!
+  memeberCount: Int!
+}
+
 input UserInput {
   id: ID!
   name: String!
+}
+
+input GuildInput {
+  id: ID!
+  region: String!
+  memeberCount: Int!
 }

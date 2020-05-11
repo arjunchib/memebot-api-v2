@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "develop": "nodemon src/index.js",
-    "seed": "node src/seed.js"
+    "seed": "node -e js,json,gql src/seed.js"
   },
   "prettier": {
     "proseWrap": "always"

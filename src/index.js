@@ -26,7 +26,7 @@ async function main() {
 
   // Load schema
   const schema = buildSchema(
-    fs.readFileSync(path.resolve(__dirname, "schema.graphql"), "utf-8")
+    fs.readFileSync(path.resolve(__dirname, "schema.gql"), "utf-8")
   );
 
   // Set graphql options

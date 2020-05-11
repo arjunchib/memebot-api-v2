@@ -15,8 +15,6 @@ const main = async () => {
   console.log("Created new memes collection");
   await memes.createIndex({ name: 1 }, { unique: true });
   console.log("Created unique name index");
-  await memes.createIndex({ commands: 1 });
-  console.log("Created commands index");
   await client.close();
 };
 

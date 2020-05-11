@@ -14,7 +14,7 @@ const oldMemeToNewMeme = (meme) => {
   const originUrl = `https://${process.env.SPACE}.${process.env.SPACE_ENDPOINT}/${key}`;
   const edgeUrl = `https://${process.env.SPACE_EDGE}/${key}`;
   return {
-    name: meme.name,
+    names: meme.commands,
     author: {
       id: meme.authorID,
       name: meme.author,
@@ -23,7 +23,6 @@ const oldMemeToNewMeme = (meme) => {
     edgeUrl,
     space: process.env.SPACE,
     key,
-    commands: meme.commands,
     tags: meme.tags,
     volume: Number.isFinite(meme.volume) ? meme.volume : 1,
     createdAt: meme.dateAdded,
