@@ -45,7 +45,7 @@ jobs:
         run: node ${GITHUB_WORKSPACE}/scripts/hydrate-dotenv.js
       - name: Upload files to memecentral
         run:
-          rsync -azh --delete --exclude ".git" --exclude-from ".gitignore" --include=".env"
+          rsync -azh --delete --exclude ".git" --exclude-from ".gitignore" --include ".env"
           ${GITHUB_WORKSPACE}/ ${USERNAME}@${HOST}:~/memebot-api/
       - name: Reload PM2 server
         run: |
