@@ -25,7 +25,7 @@ const oldMemeToNewMeme = (meme) => {
     key,
     tags: meme.tags,
     volume: Number.isFinite(meme.volume) ? meme.volume : 1,
-    createdAt: meme.dateAdded,
+    createdAt: new Date(meme.dateAdded),
   };
 };
 
@@ -74,6 +74,8 @@ const main = async () => {
     const memes = db.collection("memes");
     const result = await memes.insertMany(restoredMemes, { ordered: false });
     console.log(`Restored ${result.insertedCount} memes`);
+  } catch (e) {
+    console.log(e.writeErrors[0].err.op);
   } finally {
     client.close();
   }

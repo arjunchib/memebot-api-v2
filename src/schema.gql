@@ -1,15 +1,14 @@
 type Query {
   info: String!
   memes: [Meme!]!
-  meme(command: String!): Meme
-  commands: [String!]!
+  meme(name: String!): Meme
   tags: [String!]!
-  play(id: ID!): Play
+  play(id: ID!): Play!
 }
 
 type Mutation {
   createMeme(
-    name: String!
+    names: [String!]!
     author: UserInput!
     url: String!
     start: String!
@@ -20,29 +19,27 @@ type Mutation {
   removeAliasFromMeme(name: String!, alias: String!): Meme
   addTagToMeme(name: String!, tag: String!): Meme
   removeTagFromMeme(name: String!, tag: String!): Meme
-  renameMeme(oldName: String!, newName: String!): Meme
   updateVolumeOfMeme(name: String!, volume: Float!): Meme
   logPlay(
-    command: String!
+    name: String!
     author: UserInput!
     time: String!
     guild: GuildInput!
-  ): Play
+  ): Play!
 }
 
 type Meme {
   _id: ID!
-  name: String!
+  names: [String!]!
   author: User!
   originUrl: String!
   edgeUrl: String!
   space: String!
   key: String!
   sourceUrl: String
-  commands: [String!]!
   tags: [String!]
   volume: Float!
-  createdAt: String!
+  createdAt: Float!
 }
 
 type Play {

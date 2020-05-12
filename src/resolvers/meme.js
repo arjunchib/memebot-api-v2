@@ -1,4 +1,4 @@
-module.exports = async function ({ command }, { db }) {
+module.exports = async function ({ name }, { db }) {
   const memes = db.collection("memes");
-  return await memes.findOne({ commands: command });
+  return await memes.findOne({ names: name });
 };

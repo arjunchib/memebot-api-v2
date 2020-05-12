@@ -8,8 +8,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "develop": "nodemon src/index.js",
-    "seed": "node -e js,json,gql src/seed.js"
+    "develop": "nodemon -e js,json,gql src/index.js",
+    "seed": "node scripts/seed.js",
+    "seed-with-ogs": "node scripts/seed-with-ogs.js"
   },
   "prettier": {
     "proseWrap": "always"

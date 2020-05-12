@@ -1,8 +1,9 @@
 module.exports = async function ({ name, tag }, { db }) {
   const memes = db.collection("memes");
   const result = await memes.findOneAndUpdate(
-    { name },
-    { $pull: { tags: tag } }
+    { names: name },
+    { $pull: { tags: tag } },
+    { returnOrignal: false }
   );
   return result.value;
 };
