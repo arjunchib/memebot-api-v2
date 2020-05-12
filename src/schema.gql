@@ -1,0 +1,74 @@
+type Query {
+  info: String!
+  memes: [Meme!]!
+  meme(name: String!): Meme
+  tags: [String!]!
+  play(id: ID!): Play!
+}
+
+type Mutation {
+  createMeme(
+    names: [String!]!
+    author: UserInput!
+    url: String!
+    start: String!
+    end: String!
+  ): Meme!
+  deleteMeme(name: String!): Meme
+  addAliasToMeme(name: String!, alias: String!): Meme
+  removeAliasFromMeme(name: String!, alias: String!): Meme
+  addTagToMeme(name: String!, tag: String!): Meme
+  removeTagFromMeme(name: String!, tag: String!): Meme
+  updateVolumeOfMeme(name: String!, volume: Float!): Meme
+  logPlay(
+    name: String!
+    author: UserInput!
+    time: String!
+    guild: GuildInput!
+  ): Play!
+}
+
+type Meme {
+  _id: ID!
+  names: [String!]!
+  author: User!
+  originUrl: String!
+  edgeUrl: String!
+  space: String!
+  key: String!
+  sourceUrl: String
+  tags: [String!]
+  volume: Float!
+  createdAt: Float!
+}
+
+type Play {
+  _id: ID!
+  command: String!
+  meme: Meme!
+  author: User!
+  time: String!
+  guild: Guild!
+}
+
+type User {
+  id: ID!
+  name: String!
+}
+
+type Guild {
+  id: ID!
+  region: String!
+  memeberCount: Int!
+}
+
+input UserInput {
+  id: ID!
+  name: String!
+}
+
+input GuildInput {
+  id: ID!
+  region: String!
+  memeberCount: Int!
+}

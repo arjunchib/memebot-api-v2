@@ -29,17 +29,20 @@ jobs:
         run: |
           printf "%s" "$SERVER_PUBLIC_KEY" > "${HOME}/.ssh/known_hosts"
           chmod 600 ${HOME}/.ssh/known_hosts
-      - name: Add secrets to PM2 Config
+      - name: Install dependencies
+        run: yarn install --prod --frozen-lockfile --non-interactive
+      - name: Add secrets to .env
         env:
-          MONGO_URL: ${{ secrets.MONGO_URL }}
-          MEMEBOT_IP: ${{ secrets.MEMEBOT_IP }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SPACE: ${{ secrets.SPACE }}
-          SPACES_ENDPOINT: ${{ secrets.SPACES_ENDPOINT }}
-        run:
-          node ${GITHUB_WORKSPACE}/scripts/pm2-config.js MONGO_URL MEMEBOT_IP
-          AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY SPACE SPACES_ENDPOINT
+          MEMEBOT_IP: ${{ secrets.MEMEBOT_IP }}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
+          NODE_ENV: production
+          SPACE: memebot
+          SPACE_ENDPOINT: nyc3.digitaloceanspaces.com
+          SPACE_PREFIX: memes
+          SPACE_EDGE: silo.memebot.solutions
+        run: node ${GITHUB_WORKSPACE}/scripts/hydrate-dotenv.js
       - name: Upload files to memecentral
         run:
           rsync -azh --delete --exclude ".git" --exclude-from ".gitignore"
@@ -49,7 +52,7 @@ jobs:
           ssh ${USERNAME}@${HOST} -T << EOF
             cd ~/memebot-api/
             nvm install
-            yarn
+            yarn install --prod --frozen-lockfile --non-interactive
             pm2 startOrReload ecosystem.config.json
             pm2 save
           EOF
