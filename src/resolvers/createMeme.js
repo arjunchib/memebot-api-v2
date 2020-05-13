@@ -25,7 +25,5 @@ module.exports = async ({ names, author, url, start, end }, { db }) => {
 
   await store.add(audioStream, process.env.SPACE, key);
 
-  console.log(result);
-
   return result.ops[0];
 };
