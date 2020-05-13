@@ -22,8 +22,8 @@ type Mutation {
   updateVolumeOfMeme(name: String!, volume: Float!): Meme
   logPlay(
     name: String!
-    author: UserInput!
-    time: String!
+    userID: ID!
+    timestamp: Float!
     guild: GuildInput!
   ): Play!
 }
@@ -44,10 +44,10 @@ type Meme {
 
 type Play {
   _id: ID!
-  command: String!
-  meme: Meme!
-  author: User!
-  time: String!
+  name: String!
+  memeID: ID!
+  userID: ID!
+  timestamp: Float!
   guild: Guild!
 }
 
@@ -59,7 +59,7 @@ type User {
 type Guild {
   id: ID!
   region: String!
-  memeberCount: Int!
+  memberCount: Int!
 }
 
 input UserInput {
@@ -70,5 +70,5 @@ input UserInput {
 input GuildInput {
   id: ID!
   region: String!
-  memeberCount: Int!
+  memberCount: Int!
 }

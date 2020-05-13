@@ -1,3 +1,5 @@
+const meme = require('./meme')
+
 module.exports = {
   bsonType: "object",
   required: [
@@ -12,19 +14,12 @@ module.exports = {
     "createdAt",
   ],
   properties: {
-    names: {
+    name: {
       bsonType: "array",
       uniqueItems: true,
       minItems: 1,
     },
-    author: {
-      bsonType: "object",
-      required: ["id", "name"],
-      properties: {
-        id: { bsonType: "string" },
-        name: { bsonType: "string" },
-      },
-    },
+    meme,
     originUrl: { bsonType: "string" },
     edgeUrl: { bsonType: "string" },
     space: { bsonType: "string" },
