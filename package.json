@@ -40,7 +40,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "graphql": "^15.0.0",
     "mongodb": "^3.5.7",
-    "validator": "^13.0.0",
+    "validator": "^13.7.0",
     "ytdl-core": "^2.1.2"
   },
   "devDependencies": {
